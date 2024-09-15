@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>
+</head>
+<body>
+    <script>
+        //make your game variables here for now
+        let ball=null;
+        let paddle=null;
+        let brick=null;
+        let bricks=[];
+        let dxBall=10;
+        let dyBall=-10;
+        let _this=null;
+        let _ids=[];
+        let leftArrowKey=null;
+        let rightArrowKey=null;
+
+        class mainGame extends Phaser.Scene {
+        
+            constructor (config)
+            {
+                super(config);
+                _this=this;
+            }
+
+            //the preload is used to load all the game assets into memory
+            preload ()
+            {
+                this.load.image("ball","assets/sprites/ballGrey.png");
+                this.load.image("paddle","assets/sprites/buttonDefault.png");
+                this.load.image("brick","assets/sprites/element_blue_rectangle.png");
+                this.load.image("redBrick","assets/sprites/element_red_rectangle.png");
+                this.load.image("greenBrick","assets/sprites/element_green_rectangle.png");
+                this.load.image("purpleBrick","assets/sprites/element_purple_rectangle.png");
+
+            }//end of preload
+        
+            //create resource and assign to variables in the create function
+            create (data)
+            {
+                ball=this.physics.add.image(400,500,"ball");
+                paddle=this.physics.add.image(400,550,"paddle");
+                //brick=this.physics.add.image(100,50,"brick");
+                _ids=["redBrick","greenBrick","purpleBrick","brick"];
+                _this.createGridBricks(7,10,_ids);
+                leftArrowKey=this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+                rightArrowKey=this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+            }//end of create
+
+            //the update function is your game loop function
+            //it iterates for every frame of your game
+            update()
+            {
+                ball.y+=dyBall;
+                ball.x+=dxBall;
+                if((ball.x+11)>800 || (ball.x-11)<0)
+                {
+                    dxBall*=-1
+                }
+                if((ball.y+11)>600 || (ball.y-11)<0)
+                {
+                    dyBall*=-1
+                }
+
+                for(let x=0;x<bricks.length;x++)
+                {
+                    brick=bricks[x];
+                    if(this.physics.world.overlap(ball,brick)==true)
+                    {
+                        dyBall*=-1;
+                        brick.x=-1000;
+                    }
+                }//end of brick to ball collision checks
+
+                if(leftArrowKey.isDown)
+                {
+                    paddle.x-=10;
+                }
+                else if(rightArrowKey.isDown)
+                {
+                    paddle.x+=10;
+                }
+                if(_this.collisionChecker(ball,paddle))
+                {
+                    dyBall*=-1;
+                    ball.y=paddle.y-25-11;
+                }
+            }//end of update
+            
+            //our custom functions
+
+            collisionChecker(sprite1,sprite2)
+            {
+                return this.physics.world.overlap(sprite1,sprite2);
+            }
+            createBricks(numberOfCols)
+            {
+                for(let x=0;x<numberOfCols;x++)
+                {
+                    brick=this.physics.add.image(100+(70*x),50,"brick");
+                    bricks.push(brick);
+                    
+                    brick=this.physics.add.image(40+(75*x),90,"redBrick");
+                    bricks.push(brick);
+                    
+                    brick=this.physics.add.image(100+(70*x),130,"greenBrick");
+                    bricks.push(brick);
+                    
+                    brick=this.physics.add.image(40+(75*x),170,"purpleBrick");
+                    bricks.push(brick);
+                }
+            }//end of my createBricks function
+
+            createGridBricks(rows,cols,ids)
+            {
+                let brickID="";
+                let number=0;
+                for(let y=0;y<rows;y++)
+                {
+                    for(let x=0;x<cols;x++)
+                    {
+                        number=Math.round(Math.random()*(ids.length-1));
+                        brickID=ids[number];
+                        brick=this.physics.add.image(100+(70*x),55+50*y,brickID);
+                        bricks.push(brick);
+                    }
+                }
+            }
+
+        }//end of mainGame screen
+
+        class endScene extends Phaser.Scene {
+        
+            constructor (config)
+            {
+                super(config);
+            }
+
+            preload(){
+
+            }
+            create(){
+                
+            }//end of create
+            update(){
+
+            }
+
+        }
+        //end of endScene screen
+
+
+    var config = {
+        type: Phaser.AUTO,
+        parent: 'phaser-example',
+        width: 800,
+        height: 600,
+        physics: {
+            default: 'arcade',
+            arcade: {
+                debug: false
+             
+                }
+        }
+    };
+
+    var game = new Phaser.Game(config);
+    
+    game.scene.add("game",mainGame);
+    game.scene.add("endScene",endScene);
+   //game.scene.add("highScoreScene",highScoresScene);
+    //game.scene.start("endScene");
+    game.scene.start("game");
+    //game.scene.setVisible("endScene");
+    
+    </script>
+
+</body>
+</html>
+
+
+
+
+

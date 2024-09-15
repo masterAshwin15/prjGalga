@@ -1,0 +1,68 @@
+<!--
+    Ashwin, Harshaan, Evan
+    2021-01-28
+    Gamepage
+    This is our gamepage HTML
+-->
+<!-- Evan 21/01/11 7pm added link to score.js -->
+<!-- Evan 21/01/15 7pm added scores -->
+<!-- Evan 21/01/19 7pm added link to homepage -->
+<!-- Evan 21/01/21 noon added nav bar -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="code.js"></script>
+    <!--<script type="text/javascript" src="align.js"></script>-->
+    <script type="text/javascript" src="../titleScreen/title.js"></script>
+    <script type="text/javascript" src="score.js"></script>
+    <!-- make sure score.js is last linked script for it to load corectly -->
+</head>
+
+<body>
+    <div id="nav">
+        <a href="../../index.html">Home</a>
+        <a href="../../help/index.html">Help</a>
+        <a href="../../screens/index.html">Screens</a>
+        <a href="../../functions/index.html">Functions</a>
+        <a href="../../HighScores/index.html">High Scores</a>
+        <a href="../../codeExamples/index.html">Code Examples</a>
+    </div>
+    <div id="phaser-example">
+        <!-- Phaser canvas displays in here -->
+    </div>
+    <div id="divHighscore">
+        <button id="playAgainButton" onClick="window.location.reload();">Play Again</button>
+
+        <!-- This content will show under the phaser game -->
+        <h1>Galaga High Scores</h1>
+
+        <form>
+            <input id="userName" type="text" placeholder="Name Here..." required>
+
+            <label id="labelCheck" style="display: block; text-align: center; margin-bottom: 10px;"></label>
+
+            <!-- <input id="userScore" type="text" placeholder="Points"> -->
+            <button onclick="highScoreSubmit(); return false;" type="submit">Submit Score</button>
+        </form>
+
+        <table id="HighScoreTable">
+            <tr>
+                <th></th>
+                <th>Score</th>
+                <th style="text-align: left !important; border-left: transparent solid 20px;">Name</th>
+            </tr>
+            <tbody id="HighScoreTableBody">
+
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>

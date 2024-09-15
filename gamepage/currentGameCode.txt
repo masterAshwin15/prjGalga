@@ -1,0 +1,1286 @@
+   /*
+                    Ashwin, Harshaan, Evan
+                    2021-01-28
+                    Gamepage
+                    This is the Phaser code for out galaga game. The Phaser code inclues the code for our title scene, main game scene, boss scene, and end game scene  
+               */
+
+   //worker comments
+   /*Harshaan Mahendran 2021-01-07 7:55pm Work on game movement*/
+   /*Harshaan Mahendran 2021-01-08 6:52pm Work on game movement and shooting*/
+   /*Harshaan Mahendran 2021-01-09 6:28pm Work on game movement and shooting*/
+   /*Harshaan Mahendran 2021-01-10 7:01pm Work on background screen and game*/
+   /*Harshaan Mahendran 2021-01-11 6:55pm Work on game and linking*/
+   /*Harshaan Mahendran 2021-01-12 4:45pm Work on game*/
+   /*Harshaan Mahendran 2021-01-13 1:35pm Work on game*/
+   /*Harshaan Mahendran 2021-01-13 6:05pm Work on cpu projectile fireing*/
+   /*Harshaan Mahendran 2021-01-14 11:01am Work on game*/
+   /*Harshaan Mahendran 2021-01-14 7:09pm Work on game*/
+   /*Harshaan Mahendran 2021-01-15 9:35am Work on game*/
+   /*Harshaan Mahendran 2021-01-16 4:11pm Work on game*/
+   /*Harshaan Mahendran 2021-01-17 6:40pm Work on game*/
+   /*Harshaan Mahendran 2021-01-18 7:33pm Work on game*/
+   /*Harshaan Mahendran 2021-01-19 10:01am Work on game*/
+   /*Harshaan Mahendran 2021-01-19 5:26pm Work on game*/
+   /*Harshaan Mahendran 2021-01-20 9:35am Work on game*/
+   /*Harshaan Mahendran 2021-01-20 7:20pm Work on game*/
+   /*Harshaan Mahendran 2021-01-21 9:32am Work on game*/
+   /*Harshaan Mahendran 2021-01-21 7:28pm Work on game*/
+   /*Harshaan Mahendran 2021-01-22 10:07am Work on game*/
+   /*Ashwin Vigneswaramoorthy 2021-01-09 8:25 PM Work on implimenting game audio*/
+   /*Ashwin Vigneswaramoorthy 2021-01-09 7:01 PM Work on updating score and lives constantly*/
+   /*Ashwin Vigneswaramoorthy 2021-01-10 6:45 PM Work on making all sprites transparent*/
+   /*Ashwin Vigneswaramoorthy 2021-01-12 5:07 PM Work on game*/
+   /*Ashwin Vigneswaramoorthy 2021-01-13 6:05 PM Work on animating sprites*/
+   /*Ashwin Vigneswaramoorthy 2021-01-15 9:40 AM Work on game */
+   /*Ashwin Vigneswaramoorthy 2021-01-14 7:09 PM Work on switching scenes between game and boss */
+   /*Ashwin Vigneswaramoorthy 2021-01-15 9:42 AM Work on game*/
+   /*Ashwin Vigneswaramoorthy 2021-01-16 5:10 PM Work on animating sprites and creating spritesheets*/
+   /*Ashwin Vigneswaramoorthy 2021-01-17 6:37 PM Work on animating sprites and creating spritesheets*/
+   /*Ashwin Vigneswaramoorthy 2021-01-18 7:21 PM Work on animating sprites and creating spritesheets*/
+   /*Ashwin Vigneswaramoorthy 2021-01-19 11:05 AM Work on documentation for all parameters of the assignment*/
+   /*Ashwin Vigneswaramoorthy 2021-01-19 5:07 PM Work on animating sprites and creating spritesheets*/
+   /*Ashwin Vigneswaramoorthy 2021-01-20 10:02 AM Work on animating sprites and creating spritesheets*/
+   /*Ashwin Vigneswaramoorthy 2021-01-20 7:41 PM Work on animating sprites and creating spritesheets*/
+   /*Ashwin Vigneswaramoorthy 2021-01-21 9:32 AM Work on animating sprites and creating spritesheets*/
+
+   //TODO Figure out how to make sprites and animate them and shake the screen - Ashwin
+   //TODO Update Sprites when done - Harshaan
+   //TODO Boss every 500 points and every 100 after- ALL half done
+   //TODO Add documentation - Done except for documentation for string functions done
+   //TODO check rubric done
+   //TODO Reorganize variables done
+   //TODO Make Sprite Transparent - All done
+   //TODO Edit Gamepage HTML and add buttons - Ashwin
+   //TODO for arrays, use to load up meteors. - Ashwin
+   //TODO scenes for game with different difficulty - Harshaan
+   //TODO move each scene to a different code file.
+   //TODO ask krnic abt adding custom functions on top of code as commented out code done
+   //TODO place custom functions at start of code just after global variable declarations done
+   //TODO explain why custom functions are where they are. done
+   //TODO adjust scope of functions to be global done
+   //TODO adjust scope of variables done
+   //TODO add indentations for code
+   //TODO fix expolsion animation
+   //TODO play again btn
+   //TODO fix switching from boss scene to end scene
+
+   /********PLEASE NOTE: Variables were tested in lexical positions in the phaser game, they do not work. Thus, variables are either GLOBAL or LOCAL.********/
+
+   //global variables
+   let bug = null; //the bug is to be used in multiple different scenes, hence it is a global variable. For now it is only used in the mainGame scene.
+   let hornet = null; //the hornet is to be used in multiple different scenes, hence it is a global variable. For now it is only used in the mainGame scene.
+   let squid = null; //the squid is to be used in multiple different scenes, hence it is a global variable. For now it is only used in the mainGame scene.
+   let ship = null; //the ship is to be used in multiple different scenes as it is the player's character, hence it is a global variable.
+   let bullet = null; //the bullet is to be used in multiple different scenes as it is the player's fireable projectile, hence it is a global variable.
+   let leftKey = null; //controls the ship in multiple scenes.
+   let rightKey = null; //controls the ship in multiple scenes.
+   let upKey = null; //controls the ship in multiple scenes.
+   let downKey = null; //controls the ship in multiple scenes.
+   let shootKey = null; //controls the projectile firing in multiple scenes.
+   let aimKey = null; //controls the projectile aiming process in multiple scenes.
+   let startKey = null; //used in the title scene to start the game, thus, it is a global variable.
+   let cpuBullet = null; //used in multiple scenes to control the fireballs going horizontally across the screen. For now only used in the mainGame scene.
+   let boss = null; //used in multiple boss scenes to represent the boss. For now only used in the boss scene to represent the boss.
+   let shotsTaken = null; //used to count all the shots taken in all the scenes. 
+   let shotsHit = null; //used to represent the shots that hit objects in all the scenes. 
+   let explosionEffect = null; //used as an animated affect when the enemies are destroyed, and when made lexical, it causes bugs in our game
+   let dxBoss = 15; //used to represent the movement of the boss on the x-axis. Used in multiple parts of the boss scene, hence is global
+   let cpuBullet2 = null; //used in multiple scenes to control the fireballs going horizontally across the screen in the mainGame.
+   let cpuBullet3 = null; //used in multiple scenes to control the fireballs going horizontally across the screen in the mainGame.
+   let cpuBullet4 = null; //used in multiple scenes to control the fireballs going horizontally across the screen in the mainGame.
+   let meteor1 = null; //used in multiple scenes to control the meteors going vertically across the screen in the mainGame.
+   let meteor2 = null; //used in multiple scenes to control the meteors going vertically across the screen in the mainGame.
+   let meteor3 = null; //used in multiple scenes to control the meteors going vertically across the screen in the mainGame.
+   let meteor4 = null; //used in multiple scenes to control the meteors going vertically across the screen in the mainGame.
+   let blackHole = null; //used in multiple scenes to control the black hole in the mainGame scene.
+   let blackHoleSuction = null; //used in multiple scenes to control the black hole suction of the ship. For now only used in the mainGame scene.
+
+   //call function
+   let _thisMainGame = null; //used in mainGame scene to call functions
+   let _thisBossScene = null; //used in boss scene to call functions
+   let _thisEndScene = null; //used in end scene to call functions
+
+   //variables to store game info
+   let lives = 5; //used to contain lives in multiple scenes.
+   let score = 0; //used to contain score
+   let score2 = 0; //used to contain score
+   let score3 = 0; //used to contain score
+   let finalScore = 0; //used to contain finalScore, basically the sum of all three scores. 
+   let bossHp = 500; //We are going to have multiple boss scenes where the difficulty slowly increases, so all boss scenes needs access to this variable
+
+   /*********Scores Array, this array stores each score variable from all three waves*********/
+   let scores = []; //is global so mainGame and bossScene can have access to this array to store the scores between switching scenes. Stores the scores and is used to calculate the finalScore at the end.
+
+   //variables to store text objects on our game screen
+   let txtLives; //txtLives is accessed through the mainGame and bossScene, as it is needed as conditions to lose the game
+   let txtScore; //txtScore is accessed through all scenes beside titleScene, as the objective is to beat the score, and the score is accessed through all scenes to keep track and finally display in the endGame scene
+   let txtBossHp; //txtBossHp is accessed in the Boss Scene. Since it is acessed in multiple parts of the scene, it is declared globally. 
+
+   //sound effect variables
+   let shipShooting = null; //the ship can shoot projectiles when playing the mainGame scene and the bossScene, and therefore is easier to access when made global
+   let backgroundMusic = null; //attempted to make this lexical to the mainGame scene and created bugs, therefore it needs to be global
+   let shipDestruction = null; //the ship can be destroyed through playing the mainGame scene and the bossScene, and therefore is easier to access when made global
+   let gameStart = null; //attempted to make this lexical to the titleScene and created bugs, therefore it needs to be global
+   let enemyDestruction = null; //enemy desctruction sound affects are used between the mainGame scene and the bossScene, and therefore it is easier to access when made as a global variable
+   let collision = null; //collision sound affects are used throughout all scenes, therefore it needs to be global
+   let titleAudio = null; //attempted to make this lexical to the titleScene and created bugs, therefore it needs to be global
+   let gameBackground = null; //attempted to make this lexical to the endGame scene and created bugs, therefore it needs to be global
+   let endMusic = null; //attempted to make this lexical to the endGame scene and created bugs, therefore it needs to be global
+
+   /*****CUSTOM FUNCTIONS****/
+
+   /*******Function to Adjust Obstacles (Left): Used in multiple scenes once waves are added in, thus is global********/
+   function cpuFireAdjustLeft(proj) {
+       proj.x = 0;
+       proj.y = Math.round(1 + Math.random() * 900);
+   }
+   /*******Function to Fire Obstacles (Left): Used in multiple scenes once waves are added in, thus is global********/
+   function cpuFireLeft(proj) {
+       proj.x += 5;
+       if (proj.x > 1900) {
+           cpuFireAdjustLeft(proj);
+       }
+   }
+   /*******Function to Adjust Meteors: Used in multiple scenes once waves are added in, thus is global********/
+   function cpuMeteorAdjust(proj) {
+       proj.y = 0;
+       proj.x = Math.round(1 + Math.random() * 1900);
+   }
+   /*******Function to Move Meteors: Used in multiple scenes once waves are added in, thus is global********/
+   function cpuMeteorMovement(proj) {
+       proj.y += 5;
+       if (proj.y > 900) {
+           cpuMeteorAdjust(proj);
+       }
+   }
+   /*******Function to Adjust Obstacles (Right): Used in multiple scenes once waves are added in, thus is global********/
+   function cpuFireAdjustRight(proj) {
+       proj.x = 1900;
+       proj.y = Math.round(1 + Math.random() * 900);
+   }
+   /*******Function to Fire Obstacles (Right): Used in multiple scenes once waves are added in, thus is global********/
+   function cpuFireRight(proj) {
+       proj.x -= 5;
+       if (proj.x < 0) {
+           cpuFireAdjustRight(proj);
+       }
+   }
+   /*******Counter Function for Black Holes: Used in multiple scenes once waves are added in, thus is global********/
+   function incrementSeconds() {
+       let seconds = 0;
+       seconds++;
+       if (seconds == 10) {
+           blackHoleGenerator();
+           seconds == 0;
+       }
+   }
+   /*******Function to Generate Black Holes: Used in multiple scenes once waves are added in, thus is global********/
+   function blackHoleGenerator() {
+       blackHole.x = 1700;
+       blackHole.y = 200;
+       ship.x += 10;
+       ship.y -= 10;
+   }
+   /*******Function to Reset Black Holes: Used in multiple scenes once waves are added in, thus is global********/
+   function blackHoleReset() {
+       blackHole.x = 3000;
+       blackHole.y = 3000;
+       ship.x += 0;
+       ship.y -= 0;
+   }
+   /*******Function to Add Score if Squid is shot: Used in multiple scenes once waves are added in, thus is global********/
+   function addScoreSquid() {
+       score += 30;
+   }
+   /*******Function to Add Score if Bug is shot: Used in multiple scenes once waves are added in, thus is global********/
+   function addScoreBug() {
+       score += 10;
+   }
+   /*******Function to Add Score if Hornet is shot: Used in multiple scenes once waves are added in, thus is global********/
+   function addScoreHornet() {
+       score += 20;
+   }
+   /*******Function to Switch between Scenes: Used in multiple scenes once waves are added in, thus is global. The boss variation of this function is lexical for now but will become global later********/
+   function switchScenes(scene1, scene2) {
+       game.scene.start(scene2);
+       console.log("Starting " + scene2);
+       game.scene.remove(scene1);
+   }
+   /*******Function for Border Control: Used in multiple scenes, thus is global********/
+   function borderControl(obj) {
+       if (obj.x > 1900 || obj.x < 0) {
+           obj.x = 950;
+           obj.y = 750;
+       } else if (obj.y > 900 || obj.y < 0) {
+           obj.x = 950;
+           obj.y = 750;
+       }
+   }
+   /*******Function for Moving Ship: Used in multiple scenes, thus is global********/
+   function moveShip(ship, speed) {
+       ship.x += speed * 2;
+   }
+   /*******Function for Moving Bug: Used in multiple scenes once waves are added, thus is global********/
+   function moveBug(monster) {
+       monster.y += 3;
+       if (monster.y > 900) {
+           resetMonsterPos(monster);
+       }
+   }
+   /*******Function for Moving Hornet: Used in multiple scenes once waves are added, thus is global********/
+   function moveHornet(monster) {
+       monster.y += 4;
+       if (monster.y > 900) {
+           resetMonsterPos(monster);
+       }
+   }
+   /*******Function for Moving Squid: Used in multiple scenes once waves are added, thus is global********/
+   function moveSquid(monster) {
+       monster.y += 1;
+       if (monster.y > 900) {
+           resetMonsterPos(monster);
+       }
+   }
+   /*******Function for resetting monster position: Used in multiple scenes once waves are added, thus is global********/
+   function resetMonsterPos(monster) {
+       let randomX = Phaser.Math.Between(80, 1800);
+       monster.x = randomX;
+       monster.y = 0;
+   }
+   /*******Function for Moving when right key bind is pressed: Used in multiple scenes, thus is global********/
+   function moveOnKeyRight(object) {
+       object.x += 5;
+   }
+   /*******Function for Moving when left key bind is pressed: Used in multiple scenes, thus is global********/
+   function moveOnKeyLeft(object) {
+       object.x -= 5;
+   }
+   /*******Function for Moving when up key bind is pressed: Used in multiple scenes, thus is global********/
+   function moveOnKeyUp(object) {
+       object.y -= 5;
+   }
+   /*******Function for Moving when down key bind is pressed: Used in multiple scenes, thus is global********/
+   function moveOnKeyDown(object) {
+       object.y += 5;
+   }
+   /*******Function for resetting the projectile when it goes off screen: Used in multiple scenes, thus is global********/
+   function resetProjectile(object) {
+       object.x = ship.x;
+       object.y = ship.y;
+   }
+   /*******Function for firing the projectile: Used in multiple scenes, thus is global********/
+   function fire(object) {
+       for (let x = 0; x <= 30; x++) {
+           object.y -= 5;
+       }
+       if (object.y < 0) {
+           resetProjectile(object);
+       }
+   }
+   /*******Function for killing the monster: Used in multiple scenes once waves are added, thus is global********/
+   function killMonster(monster) {
+       monster.x = 100000;
+       monster.y = 100000;
+   }
+   /*******Function for resetting the ship's position when it gets destroyed: Used in multiple scenes, thus is global********/
+   function resetShip(sprite1) {
+       sprite1.x = 30;
+       sprite1.y = 865;
+   }
+   /*******Function for destroying the ship: Used in multiple scenes, thus is global********/
+   function destroyShip(obj) {
+       obj.x = 100000;
+       obj.y = 100000;
+       txtLives = "Game OVER";
+   }
+   /***********Function for relocating explosion sprite*********/
+   function explosionRelocater(obj, effect) {
+       effect.x = obj.x;
+       effect.y = obj.y;
+   }
+
+   class titleScene extends Phaser.Scene {
+
+           constructor() {
+                   super(config);
+               } //end of constructor
+
+           preload() {
+                   //background load in
+                   this.load.image("background", "../assets/images/bg.jpg");
+                   //audio load in
+                   this.load.audio("titleAudio", "../assets/music/titleMusic.mp3");
+                   //images load in
+                   this.load.image("title", "../assets/titleImages/galagaLogo.png");
+               } //end of preload
+
+           create(data) {
+                   //background
+                   this.background = this.add.tileSprite(950, 450, config.width, config.height, "background");
+                   //images
+                   let title = this.physics.add.image(950, 450, "title");
+                   //keys
+                   startKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+                   //text
+                   let startButton = this.add.text(675, 700, "Press SPACE To Start", {
+                       fontFamily: "Monospace",
+                       fontSize: 50,
+                       color: "#00ff00"
+                   });
+                   //audio
+                   this.titleAudio = this.sound.add("titleAudio");
+                   this.titleAudio.play();
+               } //end of create
+
+           update() {
+                   //background update
+                   this.background.tilePositionY -= 0.5;
+                   //keyCheck
+                   if (startKey.isDown) {
+                       game.scene.start("game" + gameSceneIndex);
+                       game.scene.remove("titleScene");
+                       this.titleAudio.pause();
+                   }
+               } //end of update
+               //custom titleScreen functions
+       } //end of titleScene
+
+   class mainGame extends Phaser.Scene {
+
+           constructor(config) {
+                   super(config);
+                   _thisMainGame = this;
+
+               } //end of constructor
+
+           //the preload is used to load all the game assets into memory
+           preload() {
+                   //sprites load in
+                   this.load.spritesheet("ship", "../assets/sprites/shipSpriteSheet.png", {
+                       frameWidth: 50,
+                       frameHeight: 57
+                   });
+                   this.load.spritesheet("cpuMeteor", "../assets/sprites/meteorSpriteSheet.png", {
+                       frameWidth: 100,
+                       frameHeight: 120
+                   });
+                   this.load.spritesheet("explosion", "../assets/sprites/explosion.png", {
+                       frameWidth: 16,
+                       frameHeight: 16
+                   });
+                   this.load.image("blackHole", "../assets/sprites/blackHole.png");
+                   this.load.image("cpuProjectile", "../assets/sprites/cpuProj.png");
+                   this.load.image("bullet", "../assets/sprites/bullet.png");
+                   this.load.image("bug", "../assets/sprites/bug.png");
+                   this.load.image("hornet", "../assets/sprites/hornet.png");
+                   this.load.image("squid", "../assets/sprites/squid.png");
+                   this.load.audio("fire", "../assets/music/galagaShoot.mp3");
+                   this.load.audio("bg", "../assets/music/backgroundMusic.mp3");
+                   this.load.audio("killEnemy", "../assets/music/kill.mp3");
+                   this.load.audio("collision", "../assets/music/collision.mp3");
+                   this.load.audio("gameBackground", "../assets/music/gameBackgroundMusic.mp3");
+                   this.load.audio("blackHoleSuction", "../assets/music/blackHole.mp3");
+               } //end of preload
+
+           //create resource and assign to variables in the create function
+           create(data) {
+                   //background
+                   this.background = this.add.tileSprite(950, 450, config.width, config.height, "background");
+                   //addMonsters
+                   bug = this.physics.add.image(900, 60, "bug");
+                   hornet = this.physics.add.image(700, 60, "hornet");
+                   squid = this.physics.add.image(500, 60, "squid");
+                   //bug=_this.createMonster("bug");
+                   //_this.createMonster(hornet);
+                   //_this.createMonster(squid);
+                   //otherAddIns
+                   blackHole = this.physics.add.image(3000, 3000, "blackHole");
+                   bullet = this.physics.add.image(950, 750, "bullet");
+                   ship = this.physics.add.sprite(950, 750, "ship");
+                   cpuBullet = this.physics.add.image(0, 750, "cpuProjectile");
+                   cpuBullet2 = this.physics.add.image(1900, 550, "cpuProjectile");
+                   cpuBullet3 = this.physics.add.image(0, 350, "cpuProjectile");
+                   cpuBullet4 = this.physics.add.image(1900, 150, "cpuProjectile");
+                   meteor1 = this.physics.add.sprite(200, 0, "cpuMeteor");
+                   meteor2 = this.physics.add.sprite(500, 0, "cpuMeteor");
+                   meteor3 = this.physics.add.sprite(800, 0, "cpuMeteor");
+                   meteor4 = this.physics.add.sprite(1100, 0, "cpuMeteor");
+                   explosionEffect = this.physics.add.sprite(1100, 0, "explosion");
+                   leftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+                   rightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+                   upKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+                   downKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+                   aimKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+                   shootKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+                   txtScore = this.add.text(870, 10, "Score:0" + score, { fontFamily: "Monospace", fontSize: 22, color: "#00ff00" });
+                   txtLives = this.add.text(1000, 10, "Lives:5", { fontFamily: "Monospace", fontSize: 22, color: "#00ff00" });
+                   this.shipShooting = this.sound.add("fire");
+                   this.backgroundMusic = this.sound.add("bg");
+                   this.gameBackground = this.sound.add("gameBackground");
+                   this.blackHoleSuction = this.sound.add("blackHoleSuction");
+                   this.backgroundMusic.play();
+                   //playBackground
+                   this.gameBackground.play({ volume: 0.5 });
+                   this.enemyDestruction = this.sound.add("killEnemy");
+                   this.collision = this.sound.add("collision");
+                   //Sprite animations
+                   this.anims.create({
+                       key: "cpuMeteor_anim",
+                       frames: this.anims.generateFrameNumbers("cpuMeteor", { start: 0, end: 2 }),
+                       frameRate: 7,
+                       repeat: -1
+                   });
+
+                   this.anims.create({
+                       key: "ship_anim",
+                       frames: this.anims.generateFrameNumbers("ship", { start: 0, end: 3 }),
+                       frameRate: 7,
+                       repeat: -1
+                   });
+
+                   this.anims.create({
+                       key: "explosion_anim",
+                       frames: this.anims.generateFrameNumbers("explosion", { start: 0, end: 4 }),
+                       frameRate: 7,
+                       repeat: 1
+                   });
+
+                   ship.play("ship_anim");
+                   meteor1.play("cpuMeteor_anim");
+                   meteor2.play("cpuMeteor_anim");
+                   meteor3.play("cpuMeteor_anim");
+                   meteor4.play("cpuMeteor_anim");
+               } //end of create
+
+           update() {
+                   //background update
+                   this.background.tilePositionY -= 2;
+                   //border control ship
+                   borderControl(ship);
+                   moveBug(bug);
+                   cpuFireLeft(cpuBullet);
+                   cpuFireRight(cpuBullet2);
+                   cpuFireLeft(cpuBullet3);
+                   cpuFireRight(cpuBullet4);
+                   cpuMeteorMovement(meteor1);
+                   cpuMeteorMovement(meteor2);
+                   cpuMeteorMovement(meteor3);
+                   cpuMeteorMovement(meteor4);
+                   moveHornet(hornet);
+                   moveSquid(squid);
+                   //blackHole
+                   let blackHoleChance = Math.round(1 + Math.random() * 100);
+                   if (blackHoleChance == 5) {
+                       blackHoleGenerator();
+                       this.blackHoleSuction.play({ volume: 0.2 });
+                       for (let x = 0; x <= 10000; x++) {
+                           let seconds = 0;
+                           seconds++;
+                       }
+                   } else {
+                       blackHoleReset();
+                   }
+                   if (leftKey.isDown) {
+                       moveOnKeyLeft(ship);
+                   }
+                   if (rightKey.isDown) {
+                       moveOnKeyRight(ship);
+                   }
+                   if (upKey.isDown) {
+                       moveOnKeyUp(ship);
+                   }
+                   if (downKey.isDown) {
+                       moveOnKeyDown(ship);
+                   }
+                   if (aimKey.isDown) {
+                       resetProjectile(bullet, ship);
+                   }
+                   if (shootKey.isDown) {
+                       fire(bullet);
+                       this.shipShooting.play();
+                       shotsTaken += 1;
+                   }
+                   //collisionCheck
+                   if (_thisMainGame.collisionChecker(bullet, bug)) {
+                       resetProjectile(bullet);
+                       killMonster(bug);
+                       addScoreBug();
+                       txtScore.text = ("Score:" + score);
+                       this.enemyDestruction.play();
+                       explosionEffect.play("explosion_anim");
+                       _thisMainGame.explosionRelocater(bug, explosionEffect);
+                       shotsHit++;
+                   }
+                   if (_thisMainGame.collisionChecker(bullet, squid)) {
+                       resetProjectile(bullet);
+                       killMonster(squid);
+                       addScoreSquid();
+                       txtScore.text = ("Score:" + score);
+                       this.enemyDestruction.play();
+                       explosionEffect.play("explosion_anim");
+                       _thisMainGame.explosionRelocater(squid, explosionEffect);
+                       shotsHit++;
+                   }
+                   if (_thisMainGame.collisionChecker(bullet, hornet)) {
+                       resetProjectile(bullet);
+                       killMonster(hornet);
+                       addScoreHornet();
+                       txtScore.text = ("Score:" + score);
+                       this.enemyDestruction.play();
+                       explosionEffect.play("explosion_anim");
+                       _thisMainGame.explosionRelocater(hornet, explosionEffect);
+                       shotsHit++;
+                   }
+                   //collision Ship and Monster
+                   if (_thisMainGame.collisionChecker(ship, bug)) {
+                       resetShip(ship);
+                       resetMonsterPos(bug);
+                       lives -= 1;
+                       txtLives.text = ("Lives: " + lives);
+                       this.collision.play();
+                       explosionEffect.play("explosion_anim");
+                       _thisMainGame.explosionRelocater(ship, explosionEffect);
+                   }
+                   if (_thisMainGame.collisionChecker(ship, hornet)) {
+                       resetShip(ship);
+                       resetMonsterPos(hornet);
+                       lives -= 1;
+                       txtLives.text = ("Lives: " + lives);
+                       this.collision.play();
+                       explosionEffect.play("explosion_anim");
+                       _thisMainGame.explosionRelocater(ship, explosionEffect);
+                   }
+                   if (_thisMainGame.collisionChecker(ship, squid)) {
+                       resetShip(ship);
+                       resetMonsterPos(squid);
+                       lives -= 1;
+                       txtLives.text = ("Lives: " + lives);
+                       this.collision.play();
+                       explosionEffect.play("explosion_anim");
+                       _thisMainGame.explosionRelocater(ship, explosionEffect);
+                   }
+                   //collision with Obstacles
+                   if (_thisMainGame.collisionChecker(ship, cpuBullet)) {
+                       resetShip(ship);
+                       cpuFireAdjustLeft(cpuBullet);
+                       lives -= 1;
+                       txtLives.text = ("Lives: " + lives);
+                       this.collision.play();
+                       explosionEffect.play("explosion_anim");
+                       _thisMainGame.explosionRelocater(ship, explosionEffect);
+                   }
+                   if (_thisMainGame.collisionChecker(ship, cpuBullet2)) {
+                       resetShip(ship);
+                       cpuFireAdjustRight(cpuBullet2);
+                       lives -= 1;
+                       txtLives.text = ("Lives: " + lives);
+                       this.collision.play();
+                       explosionEffect.play("explosion_anim");
+                       _thisMainGame.explosionRelocater(ship, explosionEffect);
+                   }
+                   if (_thisMainGame.collisionChecker(ship, cpuBullet3)) {
+                       resetShip(ship);
+                       cpuFireAdjustLeft(cpuBullet3);
+                       lives -= 1;
+                       txtLives.text = ("Lives: " + lives);
+                       this.collision.play();
+                       explosionEffect.play("explosion_anim");
+                       _thisMainGame.explosionRelocater(ship, explosionEffect);
+                   }
+                   if (_thisMainGame.collisionChecker(ship, cpuBullet4)) {
+                       resetShip(ship);
+                       cpuFireAdjustRight(cpuBullet4);
+                       lives -= 1;
+                       txtLives.text = ("Lives: " + lives);
+                       this.collision.play();
+                       explosionEffect.play("explosion_anim");
+                       _thisMainGame.explosionRelocater(ship, explosionEffect);
+                   }
+                   if (_thisMainGame.collisionChecker(ship, meteor1)) {
+                       resetShip(ship);
+                       cpuMeteorAdjust(meteor1);
+                       lives -= 1;
+                       txtLives.text = ("Lives: " + lives);
+                       this.collision.play();
+                       explosionEffect.play("explosion_anim");
+                       _thisMainGame.explosionRelocater(ship, explosionEffect);
+                   }
+                   if (_thisMainGame.collisionChecker(ship, meteor2)) {
+                       resetShip(ship);
+                       cpuMeteorAdjust(meteor2);
+                       lives -= 1;
+                       txtLives.text = ("Lives: " + lives);
+                       this.collision.play();
+                       explosionEffect.play("explosion_anim");
+                       _thisMainGame.explosionRelocater(ship, explosionEffect);
+                   }
+                   if (_thisMainGame.collisionChecker(ship, meteor3)) {
+                       resetShip(ship);
+                       cpuMeteorAdjust(meteor3);
+                       lives -= 1;
+                       txtLives.text = ("Lives: " + lives);
+                       this.collision.play();
+                       explosionEffect.play("explosion_anim");
+                       _thisMainGame.explosionRelocater(ship, explosionEffect);
+                   }
+                   if (_thisMainGame.collisionChecker(ship, meteor4)) {
+                       resetShip(ship);
+                       cpuMeteorAdjust(meteor4);
+                       lives -= 1;
+                       txtLives.text = ("Lives: " + lives);
+                       this.collision.play();
+                       explosionEffect.play("explosion_anim");
+                       _thisMainGame.explosionRelocater(ship, explosionEffect);
+                   }
+                   //Switch is lives=0
+                   console.log(lives);
+                   if (lives == 0) {
+                       switchScenes("game" + gameSceneIndex, "endScene");
+                       this.gameBackground.pause();
+                   }
+                   //Switch if score>=500
+                   if (score >= 500) {
+                       switchScenes("game" + gameSceneIndex, "bossScene");
+                   }
+               } //end of update
+               //custom function 
+               /*******Function for collision checks between sprites and projectiles: Used locally because when used globally a bug is created********/
+           collisionChecker(sprite1, sprite2) {
+               return this.physics.world.overlap(sprite1, sprite2);
+           }
+       } //end of mainGame scene
+
+   /******NOTE: The commend out code below is not for marking, all the components needed for marking on the 22nd are present in the other parts of the code.********/
+   /*class mainGame2 extends Phaser.Scene {
+
+         constructor(config) {
+             super(config);
+             _thisMainGame = this;
+
+         }
+
+         //the preload is used to load all the game assets into memory
+         preload() {
+                 //background load in
+                 this.load.image("background", "../assets/images/bg.jpg");
+                 //sprites load in
+                 this.load.image("ship", "../assets/sprites/ship.png");
+                 this.load.image("blackHole", "../assets/sprites/blackHole.jpg");
+                 this.load.image("cpuProjectile", "../assets/sprites/cpuProj.png");
+                 this.load.image("cpuMeteor", "../assets/sprites/cpuMeteor.png");
+                 this.load.image("bullet", "../assets/sprites/bullet.png");
+                 this.load.image("bug", "../assets/sprites/bug.png");
+                 this.load.image("hornet", "../assets/sprites/hornet.png");
+                 this.load.image("squid", "../assets/sprites/squid.png");
+                 this.load.audio("fire", "../assets/music/galagaShoot.mp3");
+                 this.load.audio("bg", "../assets/music/backgroundMusic.mp3");
+                 this.load.audio("killEnemy", "../assets/music/kill.mp3");
+                 this.load.audio("collision", "../assets/music/collision.mp3");
+                 this.load.audio("gameBackground", "../assets/music/gameBackgroundMusic.mp3");
+                 this.load.audio("blackHoleSuction", "../assets/music/blackHole.mp3");
+             } //end of preload
+
+         //create resource and assign to variables in the create function
+         create(data) {
+                 //background
+                 this.background = this.add.tileSprite(950, 450, config.width, config.height, "background");
+                 //addMonsters
+                 bug = this.physics.add.image(900, 60, "bug");
+                 hornet = this.physics.add.image(700, 60, "hornet");
+                 squid = this.physics.add.image(500, 60, "squid");
+                 //bug=_this.createMonster("bug");
+                 //_this.createMonster(hornet);
+                 //_this.createMonster(squid);
+                 //otherAddIns
+                 blackHole = this.physics.add.image(3000, 3000, "blackHole");
+                 bullet = this.physics.add.image(950, 750, "bullet");
+                 ship = this.physics.add.image(950, 750, "ship");
+                 cpuBullet = this.physics.add.image(0, 750, "cpuProjectile");
+                 cpuBullet2 = this.physics.add.image(1900, 550, "cpuProjectile");
+                 cpuBullet3 = this.physics.add.image(0, 350, "cpuProjectile");
+                 cpuBullet4 = this.physics.add.image(1900, 150, "cpuProjectile");
+                 meteor1 = this.physics.add.image(200, 0, "cpuMeteor");
+                 meteor2 = this.physics.add.image(500, 0, "cpuMeteor");
+                 meteor3 = this.physics.add.image(800, 0, "cpuMeteor");
+                 meteor4 = this.physics.add.image(1100, 0, "cpuMeteor");
+                 leftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+                 rightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+                 upKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+                 downKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+                 aimKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+                 shootKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+                 txtScore = this.add.text(500, 10, "Score:0" + score2, { fontFamily: "Monospace", fontSize: 22, color: "#00ff00" });
+                 txtLives = this.add.text(700, 10, "Lives:5", { fontFamily: "Monospace", fontSize: 22, color: "#00ff00" });
+
+                 this.shipShooting = this.sound.add("fire");
+                 this.backgroundMusic = this.sound.add("bg");
+                 this.gameBackground = this.sound.add("gameBackground");
+                 this.blackHoleSuction = this.sound.add("blackHoleSuction");
+                 this.backgroundMusic.play();
+                 //playBackground
+                 this.gameBackground.play({ volume: 0.5 });
+                 this.enemyDestruction = this.sound.add("killEnemy");
+                 this.collision = this.sound.add("collision");
+             } //end of create
+
+         update() {
+                 //background update
+                 this.background.tilePositionY -= 2;
+
+                 //border control ship
+                 _thisMainGame.borderControl(ship);
+
+                 _thisMainGame.moveBug(bug);
+                 _thisMainGame.cpuFireLeft(cpuBullet);
+                 _thisMainGame.cpuFireRight(cpuBullet2);
+                 _thisMainGame.cpuFireLeft(cpuBullet3);
+                 _thisMainGame.cpuFireRight(cpuBullet4);
+                 _thisMainGame.cpuMeteorMovement(meteor1);
+                 _thisMainGame.cpuMeteorMovement(meteor2);
+                 _thisMainGame.cpuMeteorMovement(meteor3);
+                 _thisMainGame.cpuMeteorMovement(meteor4);
+                 _thisMainGame.moveHornet(hornet);
+                 _thisMainGame.moveSquid(squid);
+
+                 //blackHole
+                 let blackHoleChance = Math.round(1 + Math.random() * 100);
+                 if (blackHoleChance == 5) {
+                     _thisMainGame.blackHoleGenerator();
+                     this.blackHoleSuction.play({ volume: 0.2 });
+                     for (let x = 0; x <= 10000; x++) {
+                         let seconds = 0;
+                         seconds++;
+                     }
+                 } else {
+                     _thisMainGame.blackHoleReset();
+                 }
+
+                 if (leftKey.isDown) {
+                     _thisMainGame.moveOnKeyLeft(ship);
+                 }
+                 if (rightKey.isDown) {
+                     _thisMainGame.moveOnKeyRight(ship);
+                 }
+                 if (upKey.isDown) {
+                     _thisMainGame.moveOnKeyUp(ship);
+                 }
+                 if (downKey.isDown) {
+                     _thisMainGame.moveOnKeyDown(ship);
+                 }
+                 if (aimKey.isDown) {
+                     _thisMainGame.resetProjectile(bullet, ship);
+                 }
+                 if (shootKey.isDown) {
+                     _thisMainGame.fire(bullet);
+                     this.shipShooting.play();
+                     shotsTaken += 1;
+                 }
+                 //collisionCheck
+                 if (_thisMainGame.collisionChecker(bullet, bug)) {
+                     _thisMainGame.resetProjectile(bullet);
+                     _thisMainGame.killMonster(bug);
+                     _thisMainGame.addScoreBug();
+                     txtScore.text = ("Score:" + score);
+                     this.enemyDestruction.play();
+                     shotsHit++;
+                 }
+                 if (_thisMainGame.collisionChecker(bullet, squid)) {
+                     _thisMainGame.resetProjectile(bullet);
+                     _thisMainGame.killMonster(squid);
+                     _thisMainGame.addScoreSquid();
+                     txtScore.text = ("Score:" + score);
+                     this.enemyDestruction.play();
+                     shotsHit++;
+                 }
+                 if (_thisMainGame.collisionChecker(bullet, hornet)) {
+                     _thisMainGame.resetProjectile(bullet);
+                     _thisMainGame.killMonster(hornet);
+                     _thisMainGame.addScoreHornet();
+                     txtScore.text = ("Score:" + score);
+                     this.enemyDestruction.play();
+                     shotsHit++;
+                 }
+                 //collision Ship and Bug
+                 if (_thisMainGame.collisionChecker(ship, bug)) {
+                     _thisMainGame.resetShip(ship);
+                     _thisMainGame.resetMonsterPos(bug);
+                     lives -= 1;
+                     txtLives.text = ("Lives: " + lives);
+                     this.collision.play();
+                 }
+                 if (_thisMainGame.collisionChecker(ship, hornet)) {
+                     _thisMainGame.resetShip(ship);
+                     _thisMainGame.resetMonsterPos(hornet);
+                     lives -= 1;
+                     txtLives.text = ("Lives: " + lives);
+                     this.collision.play();
+                 }
+                 if (_thisMainGame.collisionChecker(ship, squid)) {
+                     _thisMainGame.resetShip(ship);
+                     _thisMainGame.resetMonsterPos(squid);
+                     lives -= 1;
+                     txtLives.text = ("Lives: " + lives);
+                     this.collision.play();
+                 }
+                 //collision with Obstacles
+                 if (_thisMainGame.collisionChecker(ship, cpuBullet)) {
+                     _thisMainGame.resetShip(ship);
+                     _thisMainGame.cpuFireAdjustLeft(cpuBullet);
+                     lives -= 1;
+                     txtLives.text = ("Lives: " + lives);
+                     this.collision.play();
+                 }
+                 if (_thisMainGame.collisionChecker(ship, cpuBullet2)) {
+                     _thisMainGame.resetShip(ship);
+                     _thisMainGame.cpuFireAdjustRight(cpuBullet2);
+                     lives -= 1;
+                     txtLives.text = ("Lives: " + lives);
+                     this.collision.play();
+                 }
+                 if (_thisMainGame.collisionChecker(ship, cpuBullet3)) {
+                     _thisMainGame.resetShip(ship);
+                     _thisMainGame.cpuFireAdjustLeft(cpuBullet3);
+                     lives -= 1;
+                     txtLives.text = ("Lives: " + lives);
+                     this.collision.play();
+                 }
+                 if (_thisMainGame.collisionChecker(ship, cpuBullet4)) {
+                     _thisMainGame.resetShip(ship);
+                     _thisMainGame.cpuFireAdjustRight(cpuBullet4);
+                     lives -= 1;
+                     txtLives.text = ("Lives: " + lives);
+                     this.collision.play();
+                 }
+                 if (_thisMainGame.collisionChecker(ship, meteor1)) {
+                     _thisMainGame.resetShip(ship);
+                     _thisMainGame.cpuMeteorAdjust(meteor1);
+                     lives -= 1;
+                     txtLives.text = ("Lives: " + lives);
+                     this.collision.play();
+                 }
+                 if (_thisMainGame.collisionChecker(ship, meteor2)) {
+                     _thisMainGame.resetShip(ship);
+                     _thisMainGame.cpuMeteorAdjust(meteor2);
+                     lives -= 1;
+                     txtLives.text = ("Lives: " + lives);
+                     this.collision.play();
+                 }
+                 if (_thisMainGame.collisionChecker(ship, meteor3)) {
+                     _thisMainGame.resetShip(ship);
+                     _thisMainGame.cpuMeteorAdjust(meteor3);
+                     lives -= 1;
+                     txtLives.text = ("Lives: " + lives);
+                     this.collision.play();
+                 }
+                 if (_thisMainGame.collisionChecker(ship, meteor4)) {
+                     _thisMainGame.resetShip(ship);
+                     _thisMainGame.cpuMeteorAdjust(meteor4);
+                     lives -= 1;
+                     txtLives.text = ("Lives: " + lives);
+                     this.collision.play();
+                 }
+
+                 //Switch is lives=0
+                 console.log(lives);
+                 if (lives == 0) {
+                     _thisMainGame.switchScenes("game" + gameSceneIndex, "endScene");
+                     this.gameBackground.pause();
+                 }
+
+                 //Switch if score>=500
+                 if (score >= 500) {
+                     _thisMainGame.switchScenes("game" + gameSceneIndex, "bossScene");
+
+                 }
+
+             } //end of update
+
+         //custom game functions
+         incrementSeconds() {
+             let seconds = 0;
+             seconds++;
+             if (seconds == 10) {
+                 _thisMainGame.blackHoleGenerator();
+                 seconds == 0;
+             }
+         }
+
+         blackHoleGenerator() {
+             blackHole.x = 1700;
+             blackHole.y = 200;
+             ship.x += 10;
+             ship.y -= 10;
+         }
+
+         blackHoleReset() {
+             blackHole.x = 3000;
+             blackHole.y = 3000;
+             ship.x += 0;
+             ship.y -= 0;
+         }
+
+         cpuFireAdjustLeft(proj) {
+             proj.x = 0;
+             proj.y = Math.round(1 + Math.random() * 900);
+         }
+
+         cpuFireLeft(proj) {
+             proj.x += 5;
+             if (proj.x > 1900) {
+                 _thisMainGame.cpuFireAdjustLeft(proj);
+             }
+         }
+
+         cpuMeteorAdjust(proj) {
+             proj.y = 0;
+             proj.x = Math.round(1 + Math.random() * 1900);
+         }
+
+         cpuMeteorMovement(proj) {
+             proj.y += 5;
+             if (proj.y > 900) {
+                 _thisMainGame.cpuMeteorAdjust(proj);
+             }
+         }
+
+         cpuFireAdjustRight(proj) {
+             proj.x = 1900;
+             proj.y = Math.round(1 + Math.random() * 900);
+         }
+
+         cpuFireRight(proj) {
+             proj.x -= 5;
+             if (proj.x < 0) {
+                 _thisMainGame.cpuFireAdjustRight(proj);
+             }
+         }
+
+         addScoreSquid() {
+             score += 30;
+         }
+
+         addScoreBug() {
+             score += 10;
+         }
+
+         addScoreHornet() {
+             score += 20;
+         }
+
+         switchScenes(scene1, scene2) {
+             game.scene.start(scene2);
+             console.log("Starting " + scene2);
+             game.scene.remove(scene1);
+         }
+
+         borderControl(obj) {
+             if (obj.x > 1900 || obj.x < 0) {
+                 obj.x = 950;
+                 obj.y = 750;
+             } else if (obj.y > 900 || obj.y < 0) {
+                 obj.x = 950;
+                 obj.y = 750;
+             }
+         }
+
+         moveShip(ship, speed) {
+             ship.x += speed * 2;
+         }
+
+         moveBug(monster) {
+             monster.y += 3;
+             if (monster.y > 900) {
+                 _thisMainGame.resetMonsterPos(monster);
+             }
+         }
+
+         moveHornet(monster) {
+             monster.y += 4;
+             if (monster.y > 900) {
+                 _thisMainGame.resetMonsterPos(monster);
+                 _thisMainGame.blackHoleGenerator();
+             }
+         }
+
+         moveSquid(monster) {
+             monster.y += 1;
+             if (monster.y > 900) {
+                 _thisMainGame.resetMonsterPos(monster);
+                 _thisMainGame.blackHoleGenerator();
+             }
+         }
+
+         resetMonsterPos(monster) {
+             let randomX = Phaser.Math.Between(80, 1800);
+             monster.x = randomX;
+             monster.y = 0;
+         }
+
+         moveOnKeyRight(object) {
+             object.x += 5;
+         }
+
+         moveOnKeyLeft(object) {
+             object.x -= 5;
+         }
+
+         moveOnKeyUp(object) {
+             object.y -= 5;
+         }
+
+         moveOnKeyDown(object) {
+             object.y += 5;
+         }
+
+         resetProjectile(object, player) {
+             object.x = ship.x;
+             object.y = ship.y;
+         }
+
+         fire(object) {
+             for (let x = 0; x <= 30; x++) {
+                 object.y -= 5;
+             }
+             if (object.y < 0) {
+                 _thisMainGame.resetProjectile(object);
+             }
+         }
+
+         collisionChecker(sprite1, sprite2) {
+             return this.physics.world.overlap(sprite1, sprite2);
+         }
+
+         killMonster(monster) {
+             monster.x = 100000;
+             monster.y = 100000;
+         }
+
+         resetShip(sprite1) {
+             sprite1.x = 30;
+             sprite1.y = 865;
+         }
+
+         destroyShip(obj) {
+             obj.x = 100000;
+             obj.y = 100000;
+             txtLives = "Game OVER";
+         }
+
+     }
+     //end of mainGame2 screen*/
+
+   class endScene extends Phaser.Scene {
+
+           constructor(config) {
+                   super(config);
+                   _thisEndScene = this;
+               } //end of constructor
+
+           preload() {
+                   //audio
+                   this.load.audio("end", "../assets/music/endSceneMusic.mp3");
+                   //images load in
+                   this.load.image("title", "../assets/endImages/title.png");
+               } //end of preload
+           create(data) {
+                   //background
+                   this.background = this.add.tileSprite(950, 450, config.width, config.height, "background");
+                   if (shotsTaken == null) {
+                       shotsTaken = 0;
+                   }
+                   //images
+                   let title = this.physics.add.image(950, 250, "title");
+                   let end = this.add.text(795, 500, "GAME OVER", {
+                       fontFamily: "Monospace",
+                       fontSize: 50,
+                       color: "#00ff00"
+                   });
+                   /*********Calls on function to add score variables to score array*********/
+                   _thisEndScene.addScoreToArray(score, score2, score3);
+                   let finalScoreText = this.add.text(740, 600, "FINAL SCORE: " + finalScore, {
+                       fontFamily: "Monospace",
+                       fontSize: 50,
+                       color: "#00ff00"
+                   });
+                   let shotsT = this.add.text(740, 700, "Shots Taken: " + shotsTaken, {
+                       fontFamily: "Monospace",
+                       fontSize: 50,
+                       color: "#00ff00"
+                   });
+                   let shotsH = this.add.text(740, 800, "Shots On Target: " + shotsHit, {
+                       fontFamily: "Monospace",
+                       fontSize: 50,
+                       color: "#00ff00"
+                   });
+                   //music
+                   this.endMusic = this.sound.add("end");
+                   this.endMusic.play();
+               } //end of create
+           update() {
+                   //background update
+                   this.background.tilePositionY -= 0.5;
+               } //end of update
+               //custom functions
+               /*******Adds the score from all scenes to an Array: Only used in this scene, hence is lexical.********/
+           addScoreToArray(number1, number2, number3) {
+                   /*********Adding To the Score Array*********/
+                   scores.push(number1);
+                   scores.push(number2);
+                   scores.push(number3);
+                   _thisEndScene.scoreAdder();
+               }
+               /*******Takes each score from the Array and adds them to a single variable to display in the end scene: Only used in this scene, hence is lexical.********/
+           scoreAdder() {
+               for (let x = 0; x < scores.length; x++) {
+                   /*********Uses Score Array to calculate final score*********/
+                   let toAdd = scores[x];
+                   finalScore += toAdd;
+               }
+               return finalScore;
+           }
+       } //end of endScene scene
+
+   class bossScene extends Phaser.Scene {
+
+           constructor(config) {
+                   super(config);
+                   _thisBossScene = this;
+               } //end of constructor
+           preload() {
+                   this.load.spritesheet("ship", "../assets/sprites/shipSpriteSheet.png", {
+                       frameWidth: 50,
+                       frameHeight: 57
+                   });
+                   this.load.image("bullet", "../assets/sprites/bullet.png");
+                   this.load.image("boss", "../assets/sprites/boss.png");
+                   this.load.image("ship", "../assets/sprites/ship.png");
+                   this.load.audio("fire", "../assets/music/galagaShoot.mp3");
+                   this.load.audio("collision", "../assets/music/collision.mp3");
+               } //end of preload
+           create() {
+                   //background
+                   this.background = this.add.tileSprite(950, 450, config.width, config.height, "background");
+                   bullet = this.physics.add.image(950, 750, "bullet");
+                   txtBossHp = this.add.text(850, 10, "BOSS HP:" + bossHp, { fontFamily: "Monospace", fontSize: 22, color: "#00ff00" });
+                   txtLives = this.add.text(1000, 10, "Lives:" + lives, { fontFamily: "Monospace", fontSize: 22, color: "#00ff00" });
+                   boss = this.physics.add.image(950, 300, "boss");
+                   ship = this.physics.add.sprite(950, 750, "ship");
+                   leftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+                   rightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+                   upKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+                   aimKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+                   shootKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+                   downKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+                   this.collision = this.sound.add("collision");
+                   this.shipShooting = this.sound.add("fire");
+                   this.anims.create({
+                       key: "ship_anim",
+                       frames: this.anims.generateFrameNumbers("ship", { start: 0, end: 3 }),
+                       frameRate: 7,
+                       repeat: 10000
+                   });
+                   ship.play("ship_anim");
+               } //end of create
+           update() {
+                   //background update
+                   this.background.tilePositionY -= 0.5;
+                   //border control ship
+                   borderControl(ship);
+                   _thisBossScene.moveBoss(boss);
+                   if ((boss.x + 250) > 1900 || (boss.x + 250) < 0) {
+                       _thisBossScene.resetMonsterPos(boss);
+                   }
+                   if (leftKey.isDown) {
+                       moveOnKeyLeft(ship);
+                   }
+                   if (rightKey.isDown) {
+                       moveOnKeyRight(ship);
+                   }
+                   if (upKey.isDown) {
+                       moveOnKeyUp(ship);
+                   }
+                   if (downKey.isDown) {
+                       moveOnKeyDown(ship);
+                   }
+                   if (aimKey.isDown) {
+                       resetProjectile(bullet, ship);
+                   }
+                   if (shootKey.isDown) {
+                       fire(bullet);
+                       this.shipShooting.play();
+                       shotsTaken += 1;
+                   }
+                   if (_thisBossScene.collisionChecker(bullet, boss)) {
+                       resetProjectile(bullet);
+                       bossHp -= 20;
+                       txtBossHp.text = ("BOSS HP:" + bossHp);
+                       shotsHit++;
+                   }
+                   if (bossHp <= 0) {
+                       gameSceneIndex++;
+                       _thisBossScene.switchScenes("bossScene", "game" + gameSceneIndex);
+                   }
+                   if (_thisBossScene.collisionChecker(ship, boss)) {
+                       resetShip(ship);
+                       lives -= 1;
+                       txtLives.text = ("Lives: " + lives);
+                       this.collision.play();
+                   }
+                   if (lives <= 0) {
+                       _thisBossScene.switchScenes("bossScene" + gameSceneIndex, "endScene");
+                   }
+               } //end of update
+           //custom functions
+           /*******Function for making the CPU Boss move by itself: Used in this scene, thus is lexical.********/
+           moveBoss(monster) {
+                   monster.x += dxBoss;
+               }
+               /*******Function for when the monster attempts to go out of boundries, so the direction of the monster switches: Used in this scene, thus is lexical.********/
+           resetMonsterPos(monster) {
+                   dxBoss *= -1;
+               }
+               /*******Function for collision checks between sprites and projectiles: Used in this scene, thus is lexical.********/
+           collisionChecker(sprite1, sprite2) {
+                   return this.physics.world.overlap(sprite1, sprite2);
+               }
+               /*******Function to Switch between Scenes for Boss Scene: Used in this scene, thus is lexical.********/
+           switchScenes(scene1, scene2) {
+               game.scene.remove(scene1);
+               game.scene.start(scene2);
+               score2 = score;
+               score = 0;
+               console.log("Starting " + scene2);
+           }
+       } //end of bossScene
+
+   var config = {
+       type: Phaser.AUTO,
+       parent: 'phaser-example',
+       width: 1900,
+       height: 900,
+       physics: {
+           default: 'arcade',
+           arcade: {
+               debug: false
+
+           }
+       }
+   };
+
+   var game = new Phaser.Game(config);
+
+   /***********Making use of an array below for switching scenes (The Array is called gameScenes)**********/
+   game.scene.add("titleScene", titleScene);
+   let gameScenes = [];
+   let gameSceneIndex = 0;
+   for (let i = 0; i < 100; i++) {
+       /***********Adding Scenes to Array(The Array is called gameScenes)**********/
+       game.scene.add("game" + i, mainGame);
+       //game.scene.add("wave2" + i, mainGame2);
+   }
+
+   //scene adding and starting
+   game.scene.add("endScene", endScene);
+   game.scene.add("bossScene", bossScene);
+   game.scene.start("titleScene");

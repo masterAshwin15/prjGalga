@@ -1,0 +1,128 @@
+/* 
+Evan Harshaan Ashwin
+2021-01-28
+Gamepage styles
+Gamepage Styles Sheet
+*/
+
+
+/* Evan 21/01/10 3pm wrote styles to apply to high scores table */
+
+
+/* Evan 21/01/10 3pm wrote styles to apply to home btn */
+
+
+/* Evan 21/01/21 moon wrote styles to apply to nav */
+
+body {
+    background-image: url("../assets/images/htmlBack.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    color: white;
+}
+
+h1 {
+    text-align: center;
+    font-family: monospace;
+}
+
+input {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    width: 22%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    padding: 5px;
+    padding-left: 8px;
+    border-radius: 50px;
+    border: none;
+}
+
+button {
+    padding: 7px 15px;
+    font-weight: 800;
+    font-size: 16px;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 45px;
+    font-family: monospace;
+}
+
+table {
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 24px;
+    margin-bottom: 50px;
+    border-spacing: 10px 0;
+}
+
+table th {
+    text-decoration: underline;
+    font-weight: 600;
+    font-family: monospace;
+}
+
+th {
+    text-align: center;
+}
+
+#divHighscore {
+    border-style: solid;
+    background-color: black;
+    margin-left: 25%;
+    margin-top: 20px;
+    margin-right: 25%;
+}
+
+
+/* removes scroll bar for cleaner design */
+
+ ::-webkit-scrollbar {
+    display: none;
+}
+
+#phaser-example {
+    /* controls space abouve phaser canvas */
+    margin-top: 20px;
+}
+
+#nav {
+    background-color: black;
+    text-align: center;
+    margin: 15px 10%;
+    padding: 15px;
+    border-radius: 5px;
+    border: white 3px solid;
+}
+
+#nav a {
+    color: aliceblue;
+    border: black solid 3px;
+    padding: 5px 25px;
+    font-size: 22px;
+}
+
+#nav a:hover {
+    border-radius: 5px;
+    border: solid gray 3px;
+}
+
+#playAgainButton {
+    border: white solid 4px;
+    background: black;
+    font-size: 24px;
+    border-radius: 5px;
+    color: greenyellow;
+    margin-top: 25px;
+    margin-bottom: 0;
+}
+
+#playAgainButton:hover {
+    border-color: grey;
+}
